@@ -18,6 +18,7 @@ class SimpleBankAccountTest {
     public static final int AMOUNTDEPOSIT = 100;
     private AccountHolder accountHolder;
     private BankAccount bankAccount;
+
     @BeforeEach
     void beforeEach(){
         accountHolder = new AccountHolder("Mario", "Rossi", 1);
