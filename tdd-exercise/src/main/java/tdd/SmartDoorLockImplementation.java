@@ -1,21 +1,23 @@
 package tdd;
 
+import static java.sql.Types.NULL;
+
 public class SmartDoorLockImplementation implements SmartDoorLock {
 
     public static final int MAXNUMBEROFTRY = 5;
-    private boolean isOpen;
+    private boolean isLocked;
     private int pin;
     private int numberOfIncorrectPinInserted;
     private boolean isBlocked;
 
-    public SmartDoorLockImplementation(boolean isOpen, int pin) {
-        this.isOpen = isOpen;
+    public SmartDoorLockImplementation(boolean isLocked, int pin) {
+        this.isLocked = isLocked;
         this.pin=pin;
     }
 
     @Override
     public void setPin(int pin) {
-        if(isOpen){
+        if(!isLocked){
             if (String.valueOf(pin).length() == 4) {
                 this.pin=pin;
                 System.out.println("Pin changed");
@@ -27,48 +29,54 @@ public class SmartDoorLockImplementation implements SmartDoorLock {
 
     @Override
     public void unlock(int pin) {
-        while(numberOfIncorrectPinInserted<= MAXNUMBEROFTRY) {
-            for (int i = 0; i < numberOfIncorrectPinInserted; i++) {
+        while(getFailedAttempts() <= MAXNUMBEROFTRY) {
+            for (int i = 0; i < MAXNUMBEROFTRY; i++) {
                 if (this.pin != pin) {
                     numberOfIncorrectPinInserted++;
                     setPin(pin);
-                } else {
-                    isOpen = true;
-                    break;
+                }else {
+                    isLocked = false;
+                    return;
                 }
             }
         }
         isBlocked=true;
-        isOpen=false;
+        isLocked=false;
     }
 
     @Override
-    public void lock() {
-
+    public void lock() throws Exception {
+        this.isLocked=true;
+        if(this.pin==NULL){
+            throw new Exception("Pin is not setted");
+        }
     }
 
     @Override
     public boolean isLocked() {
-        return false;
+        return this.isLocked;
     }
 
     @Override
     public boolean isBlocked() {
-        return false;
+        return this.isBlocked;
     }
 
     @Override
     public int getMaxAttempts() {
-        return 0;
+        return MAXNUMBEROFTRY;
     }
 
     @Override
     public int getFailedAttempts() {
-        return 0;
+        return numberOfIncorrectPinInserted;
     }
 
     @Override
     public void reset() {
-
+        numberOfIncorrectPinInserted=0;
+        isLocked=false;
+        isBlocked=false;
+        setPin(pin);
     }
 }
