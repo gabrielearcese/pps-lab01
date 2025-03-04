@@ -10,9 +10,11 @@ public class SmartDoorLockImplementation implements SmartDoorLock {
     private int numberOfIncorrectPinInserted;
     private boolean isBlocked;
 
-    public SmartDoorLockImplementation(boolean isLocked, int pin) {
-        this.isLocked = isLocked;
-        this.pin=pin;
+    public SmartDoorLockImplementation() {
+        this.pin = NULL;
+        this.numberOfIncorrectPinInserted = 0;
+        this.isBlocked = false;
+        this.isLocked = false;
     }
 
     @Override

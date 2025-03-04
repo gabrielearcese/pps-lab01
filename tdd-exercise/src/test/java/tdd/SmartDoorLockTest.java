@@ -18,7 +18,7 @@ public class SmartDoorLockTest {
 
     @BeforeEach
     void beforeEach(){
-        smartDoor = new SmartDoorLockImplementation(CONDITIONFALSE,RIGHTPIN);
+        smartDoor = new SmartDoorLockImplementation();
     }
 
     @Test
